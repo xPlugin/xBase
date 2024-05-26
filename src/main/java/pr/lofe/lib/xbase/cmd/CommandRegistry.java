@@ -1,6 +1,7 @@
 package pr.lofe.lib.xbase.cmd;
 
 import dev.jorel.commandapi.CommandAPI;
+import dev.jorel.commandapi.RegisteredCommand;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginDisableEvent;
@@ -8,6 +9,7 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class CommandRegistry implements Listener {
 
@@ -15,10 +17,19 @@ public class CommandRegistry implements Listener {
 
     public boolean add(@NotNull Plugin plugin, @NotNull Command command) {
         for (Command cmd : commands.keySet()) {
-            if(cmd != null && !cmd.src.getName().equals(command.src.getName())) {
+            if(cmd == null) return false;
+
+            if(!cmd.src.getName().equals(command.src.getName())) {
                 commands.put(command, plugin);
                 return true;
             }
+
+            for(RegisteredCommand registered : CommandAPI.getRegisteredCommands()) {
+                if(Objects.equals(registered.commandName(), command.src.getName())) return false;
+            }
+
+            command.src.register();
+
         }
         return false;
     }

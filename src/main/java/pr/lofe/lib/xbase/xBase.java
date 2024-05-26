@@ -7,7 +7,8 @@ import pr.lofe.lib.xbase.cmd.CommandRegistry;
 
 public class xBase extends JavaPlugin {
 
-    private final CommandRegistry registry = new CommandRegistry();
+    public static xBase I;
+    public final CommandRegistry registry = new CommandRegistry();
 
     @Override
     public void onLoad() {
@@ -19,6 +20,8 @@ public class xBase extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        I = this;
+
         if(Const.commandapi_loaded) APILoader.enable();
 
         Bukkit.getPluginManager().registerEvents(registry, this);
