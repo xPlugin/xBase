@@ -1,9 +1,13 @@
 package pr.lofe.lib.xbase;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import pr.lofe.lib.xbase.cmd.APILoader;
+import pr.lofe.lib.xbase.cmd.CommandRegistry;
 
 public class xBase extends JavaPlugin {
+
+    private final CommandRegistry registry = new CommandRegistry();
 
     @Override
     public void onLoad() {
@@ -15,16 +19,14 @@ public class xBase extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        if(Const.commandapi_loaded) {
-            APILoader.enable();
-        }
+        if(Const.commandapi_loaded) APILoader.enable();
+
+        Bukkit.getPluginManager().registerEvents(registry, this);
     }
 
     @Override
     public void onDisable() {
-        if(Const.commandapi_loaded) {
-            APILoader.disable();
-        }
+        if(Const.commandapi_loaded) APILoader.disable();
     }
 
     public static class Const {
